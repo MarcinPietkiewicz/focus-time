@@ -1,10 +1,12 @@
-import './App.css';
+import "./App.css";
+import Timer from './Timer.js';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-Focus timer
+      <Timer />
+
       </header>
     </div>
   );
