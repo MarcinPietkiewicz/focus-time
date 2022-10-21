@@ -3,6 +3,10 @@
     width:400px;
     height:450px;
 }
+
+#timer > * {
+    user-select: none;
+}
 #title {
     background-color:darkblue;
     color:white;

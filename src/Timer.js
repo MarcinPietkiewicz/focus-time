@@ -8,12 +8,40 @@ class Timer extends React.Component {
     this.startStop = this.startStop.bind(this);
     this.reset = this.reset.bind(this);
     this.formatTime = this.formatTime.bind(this);
+    this.incBreak = this.incBreak.bind(this);
+    this.decBreak = this.decBreak.bind(this);
+    this.incSess = this.incSess.bind(this);
+    this.decSess = this.decSess.bind(this);
+  }
+
+  limits(x) {
+    return x < 60 && x > 1 ? true : false;
+  }
+
+  incBreak() {
+    if (this.limits(this.state.breakMins)) {
+      this.setState({ breakMins: this.state.breakMins + 1 });
+    }
+  }
+  decBreak() {
+    if (this.limits(this.state.breakMins)) {
+      this.setState({ breakMins: this.state.breakMins - 1 });
+    }
+  }
+  incSess() {
+    if (this.limits(this.state.sessionMins)) {
+      this.setState({ sessionMins: this.state.sessionMins + 1 });
+    }
+  }
+  decSess() {
+    if (this.limits(this.state.sessionMins)) {
+      this.setState({ sessionMins: this.state.sessionMins - 1 });
+    }
   }
 
   startStop() {}
 
   reset() {
-    console.log("reset clicked");
     this.setState({ isRunning: false, breakMins: 5, sessionMins: 25, curSessionSecs: 1500 });
   }
 
@@ -34,15 +62,17 @@ class Timer extends React.Component {
         <div id="set">
           <div id="set-break">
             <div id="break-label">Break length</div>
-            <div id="break-increment">⇧</div>
+            <div id="break-increment" onClick={this.incBreak}>
+              ⇧
+            </div>
             <div id="break-length">{this.state.breakMins}</div>
-            <div id="break-decrement">⇩</div>
+            <div id="break-decrement" onClick={this.decBreak}>⇩</div>
           </div>
           <div id="set-session">
             <div id="session-label">Session length</div>
-            <div id="session-increment">⇧</div>
+            <div id="session-increment" onClick={this.incSess}>⇧</div>
             <div id="session-length">{this.state.sessionMins}</div>
-            <div id="session-decrement">⇩</div>
+            <div id="session-decrement" onClick={this.decSess}>⇩</div>
           </div>
         </div>
         <div id="session">
