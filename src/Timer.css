@@ -1,0 +1,42 @@
+#timer {
+    background-color:steelblue;
+    width:400px;
+    height:450px;
+}
+#title {
+    background-color:darkblue;
+    color:white;
+    padding:10px;
+}
+#set{
+    width:100%;
+    display:flex;
+    justify-content: space-around;
+    padding:10px 0px;
+    font-size:0.8em;
+}
+
+#break-length, #session-length {
+    font-size:2em;
+}
+#session{
+    background-color:azure;
+    color:black;
+    padding:25px 0px;
+}
+#time-left{
+    font-size:3em;
+}
+#controls {
+    display:flex;
+    justify-content: space-around;
+    padding:10px 0px;
+}
+
+#start_stop, #reset, #session-increment, #session-decrement, #break-increment, #break-decrement {
+    cursor:pointer;
+    background-color:azure;
+    color:black;
+    padding:5px;
+    border-radius:55px;
+}
