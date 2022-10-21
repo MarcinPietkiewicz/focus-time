@@ -14,30 +14,23 @@ class Timer extends React.Component {
     this.state = { breakMins: 5, sessionMins: 25, counterSecs: 1500, isRunning: false, type: "session" };
   }
 
-
-  // block changing session and break lengths when timer is running or outside 1-60 range
-  limits(x) {
-    return !this.state.isRunning && (x < 60 && x > 1 ? true : false);
-  }
-  clock;
-
   incBreak() {
-    if (this.limits(this.state.breakMins)) {
+    if (!this.state.isRunning && this.state.breakMins < 60) {
       this.setState({ breakMins: this.state.breakMins + 1 });
     }
   }
   decBreak() {
-    if (this.limits(this.state.breakMins)) {
+    if (!this.state.isRunning && this.state.breakMins > 1) {
       this.setState({ breakMins: this.state.breakMins - 1 });
     }
   }
   incSess() {
-    if (this.limits(this.state.sessionMins)) {
+    if (!this.state.isRunning && this.state.sessionMins < 60) {
       this.setState({ sessionMins: this.state.sessionMins + 1, counterSecs: (this.state.sessionMins+1)*60 });
     }
   }
   decSess() {
-    if (this.limits(this.state.sessionMins)) {
+    if (!this.state.isRunning && this.state.sessionMins > 1) {
       this.setState({ sessionMins: this.state.sessionMins - 1, counterSecs: (this.state.sessionMins-1)*60 });
     }
   }
