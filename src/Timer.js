@@ -4,22 +4,27 @@ import styles from "./Timer.css";
 class Timer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { break: 5, session: 5, curSession: 25 };
+    this.state = { breakMins: 5, sessionMins: 25, curSessionSecs: 1500, isRunning: false };
     this.startStop = this.startStop.bind(this);
     this.reset = this.reset.bind(this);
+    this.formatTime = this.formatTime.bind(this);
   }
 
-  startStop() {
-    console.log("hello2");
-  }
+  startStop() {}
 
-  reset() {
-    console.log("hello");
+  reset() {}
+
+  formatTime() {
+    let mins = Math.floor(this.state.curSessionSecs / 60);
+    let minsFormat = (mins<10) ? '0'+mins : mins;
+    let secs = this.state.curSessionSecs % 60;
+    let secsFormat = (secs<10) ? '0'+secs : secs;
+    return `${minsFormat}:${secsFormat}`;
   }
 
   render() {
     let date = new Date(null);
-    date.setSeconds(this.state.curSession*60)
+    date.setSeconds(this.state.curSession * 60);
     return (
       <React.Fragment>
         <div id="title">Focus timer</div>
@@ -32,7 +37,7 @@ class Timer extends React.Component {
         <div id="session-decrement"></div>
         <div id="session-increment"></div>
         <div id="timer-label">Session</div>
-        <div id="time-left">{date.toISOString().substr(14,5)}</div>
+        <div id="time-left">{this.formatTime()}</div>
         <div id="start_stop" onClick={this.startStop}>
           start/stop
         </div>
