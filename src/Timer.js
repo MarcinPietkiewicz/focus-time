@@ -11,12 +11,15 @@ class Timer extends React.Component {
     this.decBreak = this.decBreak.bind(this);
     this.incSess = this.incSess.bind(this);
     this.decSess = this.decSess.bind(this);
-    this.state = { breakMins: 5, sessionMins: 25, isRunning: false, type: "session" };
+    this.state = { breakMins: 5, sessionMins: 25, counterSecs: 1500, isRunning: false, type: "session" };
   }
+
+
   // block changing session and break lengths when timer is running or outside 1-60 range
   limits(x) {
     return !this.state.isRunning && (x < 60 && x > 1 ? true : false);
   }
+  clock;
 
   incBreak() {
     if (this.limits(this.state.breakMins)) {
@@ -30,12 +33,12 @@ class Timer extends React.Component {
   }
   incSess() {
     if (this.limits(this.state.sessionMins)) {
-      this.setState({ sessionMins: this.state.sessionMins + 1 });
+      this.setState({ sessionMins: this.state.sessionMins + 1, counterSecs: (this.state.sessionMins+1)*60 });
     }
   }
   decSess() {
     if (this.limits(this.state.sessionMins)) {
-      this.setState({ sessionMins: this.state.sessionMins - 1 });
+      this.setState({ sessionMins: this.state.sessionMins - 1, counterSecs: (this.state.sessionMins-1)*60 });
     }
   }
 
@@ -50,7 +53,7 @@ class Timer extends React.Component {
   }
 
   reset() {
-    this.setState({ isRunning: false, breakMins: 5, sessionMins: 25 });
+    this.setState({ isRunning: false, breakMins: 5, sessionMins: 25, counterSecs: 1500 });
   }
 
   formatTime(x) {
@@ -91,7 +94,7 @@ class Timer extends React.Component {
         </div>
         <div id="session">
           <div id="timer-label">Session</div>
-          <div id="time-left">{this.formatTime(this.state.sessionMins * 60)}</div>
+          <div id="time-left">{this.formatTime(this.state.counterSecs)}</div>
         </div>
         <div id="controls">
           <div id="start_stop" onClick={this.startStop}>
