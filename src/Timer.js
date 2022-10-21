@@ -4,7 +4,6 @@ import styles from "./Timer.css";
 class Timer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { breakMins: 5, sessionMins: 25, curSessionSecs: 1500, isRunning: false };
     this.startStop = this.startStop.bind(this);
     this.reset = this.reset.bind(this);
     this.formatTime = this.formatTime.bind(this);
@@ -12,10 +11,11 @@ class Timer extends React.Component {
     this.decBreak = this.decBreak.bind(this);
     this.incSess = this.incSess.bind(this);
     this.decSess = this.decSess.bind(this);
+    this.state = { breakMins: 5, sessionMins: 25, isRunning: false, type: "session" };
   }
-
+  // block changing session and break lengths when timer is running or outside 1-60 range
   limits(x) {
-    return x < 60 && x > 1 ? true : false;
+    return !this.state.isRunning && (x < 60 && x > 1 ? true : false);
   }
 
   incBreak() {
@@ -39,16 +39,24 @@ class Timer extends React.Component {
     }
   }
 
-  startStop() {}
-
-  reset() {
-    this.setState({ isRunning: false, breakMins: 5, sessionMins: 25, curSessionSecs: 1500 });
+  startStop() {
+    if (this.state.isRunning) {
+      console.log("is running set to false");
+      this.setState({ isRunning: false });
+    } else {
+      console.log("is running set to true");
+      this.setState({ isRunning: true });
+    }
   }
 
-  formatTime() {
-    let mins = Math.floor(this.state.curSessionSecs / 60);
+  reset() {
+    this.setState({ isRunning: false, breakMins: 5, sessionMins: 25 });
+  }
+
+  formatTime(x) {
+    let mins = Math.floor(x / 60);
     let minsFormat = mins < 10 ? "0" + mins : mins;
-    let secs = this.state.curSessionSecs % 60;
+    let secs = x % 60;
     let secsFormat = secs < 10 ? "0" + secs : secs;
     return `${minsFormat}:${secsFormat}`;
   }
@@ -66,18 +74,24 @@ class Timer extends React.Component {
               ⇧
             </div>
             <div id="break-length">{this.state.breakMins}</div>
-            <div id="break-decrement" onClick={this.decBreak}>⇩</div>
+            <div id="break-decrement" onClick={this.decBreak}>
+              ⇩
+            </div>
           </div>
           <div id="set-session">
             <div id="session-label">Session length</div>
-            <div id="session-increment" onClick={this.incSess}>⇧</div>
+            <div id="session-increment" onClick={this.incSess}>
+              ⇧
+            </div>
             <div id="session-length">{this.state.sessionMins}</div>
-            <div id="session-decrement" onClick={this.decSess}>⇩</div>
+            <div id="session-decrement" onClick={this.decSess}>
+              ⇩
+            </div>
           </div>
         </div>
         <div id="session">
           <div id="timer-label">Session</div>
-          <div id="time-left">{this.formatTime()}</div>
+          <div id="time-left">{this.formatTime(this.state.sessionMins * 60)}</div>
         </div>
         <div id="controls">
           <div id="start_stop" onClick={this.startStop}>
