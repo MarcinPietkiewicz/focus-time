@@ -11,7 +11,8 @@ class Timer extends React.Component {
     this.decBreak = this.decBreak.bind(this);
     this.incSess = this.incSess.bind(this);
     this.decSess = this.decSess.bind(this);
-    this.state = { breakMins: 5, sessionMins: 25, counterSecs: 1500, isRunning: false, type: "session" };
+    this.timerRef = React.createRef();
+    this.state = { breakMins: 5, sessionMins: 25, timer: 1500, isRunning: false, type: "session" };
   }
 
   incBreak() {
@@ -26,33 +27,37 @@ class Timer extends React.Component {
   }
   incSess() {
     if (!this.state.isRunning && this.state.sessionMins < 60) {
-      this.setState({ sessionMins: this.state.sessionMins + 1, counterSecs: (this.state.sessionMins+1)*60 });
+      this.setState({ sessionMins: this.state.sessionMins + 1, timer: (this.state.sessionMins + 1) * 60 });
     }
   }
   decSess() {
     if (!this.state.isRunning && this.state.sessionMins > 1) {
-      this.setState({ sessionMins: this.state.sessionMins - 1, counterSecs: (this.state.sessionMins-1)*60 });
+      this.setState({ sessionMins: this.state.sessionMins - 1, timer: (this.state.sessionMins - 1) * 60 });
     }
   }
 
   startStop() {
+    
     if (this.state.isRunning) {
       console.log("is running set to false");
+      clearInterval(this.timerRef);
       this.setState({ isRunning: false });
     } else {
       console.log("is running set to true");
       this.setState({ isRunning: true });
+      this.timerRef = setInterval(() => {
+        this.setState({timer: this.state.timer-1})},1000)
     }
   }
 
   reset() {
-    this.setState({ isRunning: false, breakMins: 5, sessionMins: 25, counterSecs: 1500 });
+    this.setState({ isRunning: false, breakMins: 5, sessionMins: 25, timer: 1500 });
   }
 
-  formatTime(x) {
-    let mins = Math.floor(x / 60);
+  formatTime(s) {
+    let mins = Math.floor(s / 60);
     let minsFormat = mins < 10 ? "0" + mins : mins;
-    let secs = x % 60;
+    let secs = s % 60;
     let secsFormat = secs < 10 ? "0" + secs : secs;
     return `${minsFormat}:${secsFormat}`;
   }
@@ -87,14 +92,14 @@ class Timer extends React.Component {
         </div>
         <div id="session">
           <div id="timer-label">Session</div>
-          <div id="time-left">{this.formatTime(this.state.counterSecs)}</div>
+          <div id="time-left">{this.formatTime(this.state.timer)}</div>
         </div>
         <div id="controls">
           <div id="start_stop" onClick={this.startStop}>
             start/stop
           </div>
           <div id="reset" onClick={this.reset}>
-            reset
+            reset 
           </div>
         </div>
       </div>
