@@ -47,10 +47,13 @@ class Timer extends React.Component {
       this.setState({ isRunning: true });
       this.timerRef = setInterval(() => {
         this.setState({timer: this.state.timer-1})},1000)
-    }
+// production - change to 1000 miliseconds
+      }
   }
 
   reset() {
+    console.log('reset: is running is false')
+    clearInterval(this.timerRef);
     this.setState({ isRunning: false, breakMins: 5, sessionMins: 25, timer: 1500 });
   }
 
