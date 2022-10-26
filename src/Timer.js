@@ -1,4 +1,5 @@
 import React from "react";
+import { findRenderedDOMComponentWithTag } from "react-dom/test-utils";
 import styles from "./Timer.css";
 
 class Timer extends React.Component {
@@ -6,13 +7,18 @@ class Timer extends React.Component {
     super(props);
     this.startStop = this.startStop.bind(this);
     this.reset = this.reset.bind(this);
+    this.updateTimer = this.updateTimer.bind(this);
     this.formatTime = this.formatTime.bind(this);
     this.incBreak = this.incBreak.bind(this);
     this.decBreak = this.decBreak.bind(this);
     this.incSess = this.incSess.bind(this);
     this.decSess = this.decSess.bind(this);
+    this.playSound = this.playSound.bind(this);
     this.timerRef = React.createRef();
-    this.state = { breakMins: 5, sessionMins: 25, timer: 1500, isRunning: false, type: "session" };
+    this.state = { breakMins: 5, sessionMins: 25, timer: 1500, isRunning: false, type: "Session" };
+  }
+  playSound() {
+    console.log('playing sound...');
   }
 
   incBreak() {
@@ -37,7 +43,6 @@ class Timer extends React.Component {
   }
 
   startStop() {
-    
     if (this.state.isRunning) {
       console.log("is running set to false");
       clearInterval(this.timerRef);
@@ -45,16 +50,28 @@ class Timer extends React.Component {
     } else {
       console.log("is running set to true");
       this.setState({ isRunning: true });
-      this.timerRef = setInterval(() => {
-        this.setState({timer: this.state.timer-1})},1000)
-// production - change to 1000 miliseconds
+      this.timerRef = setInterval(this.updateTimer, 100);
+    }
+  }
+
+  updateTimer() {
+    console.log("update timer running..." + this.state.timer);
+    if (this.state.timer >= 1) {
+      this.setState({ timer: this.state.timer - 1 });
+    } else {
+      this.playSound();
+      if (this.state.type === "Session") {
+        this.setState({ type: "Break", timer: this.state.breakMins * 60 });
+      } else {
+        this.setState({ type: "Session", timer: this.state.sessionMins * 60 });
       }
+    }
   }
 
   reset() {
-    console.log('reset: is running is false')
+    console.log("reset: is running is false");
     clearInterval(this.timerRef);
-    this.setState({ isRunning: false, breakMins: 5, sessionMins: 25, timer: 1500 });
+    this.setState({ isRunning: false, breakMins: 5, sessionMins: 25, timer: 1500, type: "Session" });
   }
 
   formatTime(s) {
@@ -94,7 +111,7 @@ class Timer extends React.Component {
           </div>
         </div>
         <div id="session">
-          <div id="timer-label">Session</div>
+          <div id="timer-label">{this.state.type}</div>
           <div id="time-left">{this.formatTime(this.state.timer)}</div>
         </div>
         <div id="controls">
@@ -102,7 +119,7 @@ class Timer extends React.Component {
             start/stop
           </div>
           <div id="reset" onClick={this.reset}>
-            reset 
+            reset
           </div>
         </div>
       </div>
