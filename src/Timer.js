@@ -1,5 +1,4 @@
 import React from "react";
-import { findRenderedDOMComponentWithTag } from "react-dom/test-utils";
 import styles from "./Timer.css";
 
 class Timer extends React.Component {
@@ -50,7 +49,7 @@ class Timer extends React.Component {
     } else {
       console.log("is running set to true");
       this.setState({ isRunning: true });
-      this.timerRef = setInterval(this.updateTimer, 100);
+      this.timerRef = setInterval(this.updateTimer, 1000);
     }
   }
 
