@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/focus-time/static/css/main.f7cc0b55.css",
+    "main.css": "/focus-time/static/css/main.1dafd1bc.css",
     "main.js": "/focus-time/static/js/main.cc3b4fce.js",
     "static/media/bells.mp3": "/focus-time/static/media/bells.40139f468e2649bc09c7.mp3",
     "index.html": "/focus-time/index.html",
-    "main.f7cc0b55.css.map": "/focus-time/static/css/main.f7cc0b55.css.map",
+    "main.1dafd1bc.css.map": "/focus-time/static/css/main.1dafd1bc.css.map",
     "main.cc3b4fce.js.map": "/focus-time/static/js/main.cc3b4fce.js.map"
   },
   "entrypoints": [
-    "static/css/main.f7cc0b55.css",
+    "static/css/main.1dafd1bc.css",
     "static/js/main.cc3b4fce.js"
   ]
 }
