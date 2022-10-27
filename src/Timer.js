@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./Timer.css";
+import ring from './bells.mp3';
 
 class Timer extends React.Component {
   constructor(props) {
@@ -18,6 +19,7 @@ class Timer extends React.Component {
   }
   playSound() {
     console.log('playing sound...');
+    this.audioBeep.play();
   }
 
   incBreak() {
@@ -71,6 +73,8 @@ class Timer extends React.Component {
     console.log("reset: is running is false");
     clearInterval(this.timerRef);
     this.setState({ isRunning: false, breakMins: 5, sessionMins: 25, timer: 1500, type: "Session" });
+    this.audioBeep.pause();
+    this.audioBeep.currentTime = 0;
   }
 
   formatTime(s) {
@@ -122,6 +126,14 @@ class Timer extends React.Component {
             reset
           </div>
         </div>
+        <audio
+            id="beep"
+            preload="auto"
+            ref={(audio) => {
+              this.audioBeep = audio;
+            }}
+            src={ring}
+          />
       </div>
     );
   }
