@@ -74,6 +74,7 @@ class Timer extends React.Component {
   }
 
   formatTime(s) {
+    if (s<0) {return `00:00`}
     let mins = Math.floor(s / 60);
     let minsFormat = mins < 10 ? "0" + mins : mins;
     let secs = s % 60;
